@@ -38,3 +38,7 @@ DevPad was built as a personal productivity tool for studying programming concep
 -> Workspace history
 
 ⭐ If you like this project, feel free to star the repo!
+
+Here are some images
+<img width="1915" height="1075" alt="Screenshot 2026-02-06 181952" src="https://github.com/user-attachments/assets/f367d488-156f-4177-b36c-5b7416fb423a" />
+<img width="1904" height="968" alt="Screenshot 2026-02-06 181940" src="https://github.com/user-attachments/assets/51154c1f-fda6-4e48-8fb4-d0d07455bd56" />
