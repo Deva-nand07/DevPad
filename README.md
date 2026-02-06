@@ -31,7 +31,7 @@ CodeMirror
 🎯 Why DevPad?
 DevPad was built as a personal productivity tool for studying programming concepts, writing code alongside notes, and exporting complete learning sessions for revision.
 
-🔮 Future Enhancements (Optional)
+🔮 Future Enhancements 
 -> Language selector (C++, Python, Java, JS)
 -> Import exported sessions
 -> Keyboard shortcuts
