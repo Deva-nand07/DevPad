@@ -1,0 +1,206 @@
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:system-ui;
+background:#f3f4f6;
+color:#111;
+}
+
+.dark{
+background:#0b0b0b;
+color:#e5e5e5;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+padding:12px 20px;
+background:#111;
+color:white;
+}
+
+.dark nav{
+background:#000;
+}
+
+button{
+border:none;
+background:#2563eb;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.timer{
+    display: flex;
+    align-items: center;
+    justify-content: baseline;
+    gap: 20px;
+}
+.timer-controls{
+display:flex;
+gap:6px;
+}
+
+.timer-controls button{
+width:36px;
+height:36px;
+padding:0;
+font-size:14px;
+border-radius:6px;
+}
+
+.timer-controls button{
+border-radius:8px;
+}
+
+.toolbar{
+padding:10px;
+display:flex;
+gap:10px;
+align-items:center;
+background:#fff;
+}
+
+.dark .toolbar{
+background:#111;
+}
+
+.workspace{
+display:flex;
+height:calc(100vh - 110px);
+gap:12px;
+padding:12px;
+}
+
+.notes-card,.code-card{
+background:white;
+border-radius:12px;
+padding:12px;
+box-shadow:0 0 12px rgba(0,0,0,.08);
+}
+
+.dark .notes-card,
+.dark .code-card{
+background:#151515;
+box-shadow:none;
+}
+
+.notes-card{
+width:50%;
+}
+
+.code-card{
+flex:1;
+background:white;
+border-radius:12px;
+padding:12px;
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+.CodeMirror{
+height:90% !important;
+}
+
+textarea{
+width:100%;
+height:100%;
+border:none;
+outline:none;
+background:transparent;
+color:inherit;
+}
+
+.code-header{
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+}
+
+.output textarea{
+background:#000;
+color:#00ff90;
+border-radius:8px;
+padding:10px;
+height:160px;
+margin-top:8px;
+}
+
+.code-card > textarea,
+.CodeMirror{
+flex:1;
+}
+
+
+.dark .modal-content{
+background:#111;
+}
+
+/* ================= MOBILE RESPONSIVENESS ================= */
+
+@media (max-width: 768px){
+
+/* Toolbar wraps nicely */
+.toolbar{
+flex-wrap:wrap;
+row-gap:8px;
+}
+
+/* Workspace becomes vertical */
+.workspace{
+flex-direction:column;
+padding:8px;
+}
+
+/* Notes full width */
+.notes-card{
+width:100%;
+min-height:160px;
+}
+
+/* Code section */
+.code-card{
+width:100%;
+min-height:320px;
+}
+
+/* Code editor minimum height */
+.CodeMirror{
+min-height:220px;
+}
+
+/* Output smaller on mobile */
+.output textarea{
+height:120px;
+}
+
+/* Timer spacing */
+.timer{
+width:100%;
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.timer-controls{
+margin-left:auto;
+}
+
+/* Inputs scale better */
+input{
+min-width:140px;
+}
+
+/* Buttons slightly smaller */
+.timer-controls button{
+width:34px;
+height:34px;
+}
+
+}
+

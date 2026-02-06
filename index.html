@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="DevPad.png">
+    <title>DevPad</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/runmode/runmode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/eclipse.min.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>DevPad</h2>
+
+        <div class="nav-right">
+            <button id="themeBtn">🌙</button>
+        </div>
+    </nav>
+
+    <div class="toolbar">
+        <input id="filename" placeholder="Write File name">
+        <button onclick="saveFile()">Export</button>
+
+        <div class="timer">
+            <span id="timer">00:00</span>
+
+            <div class="timer-controls">
+                <button onclick="start()">▶</button>
+                <button onclick="stop()">■</button>
+                <button onclick="reset()">↺</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="workspace">
+
+        <!-- NOTES -->
+        <div class="notes-card">
+            <h3>Notes</h3>
+            <textarea id="notes" placeholder="Write your study notes..."></textarea>
+        </div>
+
+        <!-- CODE -->
+        <div class="code-card">
+
+            <div class="code-header">
+                <h3>Code</h3>
+            </div>
+
+            <textarea id="code"></textarea>
+
+            <div class="output">
+                <h4>Output</h4>
+                <textarea id="output" placeholder="Paste output here..."></textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
