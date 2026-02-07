@@ -1,10 +1,15 @@
+/* ================= RESET ================= */
+
 *{box-sizing:border-box}
+
+/* ================= BASE ================= */
 
 body{
 margin:0;
 font-family:system-ui;
 background:#f3f4f6;
 color:#111;
+animation:fadeIn .4s ease;
 }
 
 .dark{
@@ -12,17 +17,20 @@ background:#0b0b0b;
 color:#e5e5e5;
 }
 
+/* ================= NAV ================= */
+
 nav{
 display:flex;
 justify-content:space-between;
 padding:12px 20px;
 background:#111;
 color:white;
+transition:background .3s ease;
 }
 
-.dark nav{
-background:#000;
-}
+.dark nav{background:#000}
+
+/* ================= BUTTONS ================= */
 
 button{
 border:none;
@@ -31,14 +39,58 @@ color:white;
 padding:6px 12px;
 border-radius:6px;
 cursor:pointer;
+transition:all .2s ease;
 }
 
-.timer{
-    display: flex;
-    align-items: center;
-    justify-content: baseline;
-    gap: 20px;
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 12px rgba(37,99,235,.4);
 }
+
+button:active{transform:scale(.95)}
+
+/* ================= THEME TOGGLE ================= */
+
+.theme-toggle{
+background:transparent;
+border:1px solid #444;
+padding:6px;
+width:40px;
+border-radius:25%;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:transform .3s ease;
+}
+
+.theme-toggle svg{color:white}
+.dark .theme-toggle svg{color:#facc15}
+
+.theme-toggle:hover{
+box-shadow:0 0 10px rgba(250,204,21,.5);
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar{
+padding:10px;
+display:flex;
+gap:10px;
+align-items:center;
+background:#fff;
+}
+
+.dark .toolbar{background:#111}
+
+/* ================= TIMER ================= */
+
+.timer{
+display:flex;
+align-items:center;
+justify-content:baseline;
+gap:20px;
+}
+
 .timer-controls{
 display:flex;
 gap:6px;
@@ -49,24 +101,12 @@ width:36px;
 height:36px;
 padding:0;
 font-size:14px;
-border-radius:6px;
-}
-
-.timer-controls button{
 border-radius:8px;
 }
 
-.toolbar{
-padding:10px;
-display:flex;
-gap:10px;
-align-items:center;
-background:#fff;
-}
+.timer-controls button:hover{background:#1d4ed8}
 
-.dark .toolbar{
-background:#111;
-}
+/* ================= LAYOUT ================= */
 
 .workspace{
 display:flex;
@@ -75,11 +115,13 @@ gap:12px;
 padding:12px;
 }
 
-.notes-card,.code-card{
+.notes-card,
+.code-card{
 background:white;
 border-radius:12px;
 padding:12px;
 box-shadow:0 0 12px rgba(0,0,0,.08);
+transition:transform .2s ease, box-shadow .2s ease;
 }
 
 .dark .notes-card,
@@ -90,20 +132,33 @@ box-shadow:none;
 
 .notes-card{
 width:50%;
+display:flex;
+flex-direction:column;
 }
 
 .code-card{
 flex:1;
-background:white;
-border-radius:12px;
-padding:12px;
 display:flex;
 flex-direction:column;
 height:100%;
 }
 
+.notes-card:hover,
+.code-card:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 20px rgba(0,0,0,.12);
+}
+
+.dark .notes-card:hover,
+.dark .code-card:hover{
+box-shadow:0 12px 20px rgba(0,0,0,.5);
+}
+
+/* ================= EDITORS ================= */
+
 .CodeMirror{
-height:90% !important;
+height:90%!important;
+flex:1;
 }
 
 textarea{
@@ -113,13 +168,17 @@ border:none;
 outline:none;
 background:transparent;
 color:inherit;
+resize:none;
+transition:border .2s ease, box-shadow .2s ease;
 }
 
-.code-header{
-display:flex;
-justify-content:space-between;
-margin-bottom:6px;
+input:focus,
+textarea:focus{
+box-shadow:0 0 0 2px rgba(37,99,235,.4);
+border-radius:6px;
 }
+
+/* ================= OUTPUT ================= */
 
 .output textarea{
 background:#000;
@@ -130,55 +189,38 @@ height:160px;
 margin-top:8px;
 }
 
-.code-card > textarea,
-.CodeMirror{
-flex:1;
-}
+/* ================= MOBILE ================= */
 
+@media(max-width:768px){
 
-.dark .modal-content{
-background:#111;
-}
-
-/* ================= MOBILE RESPONSIVENESS ================= */
-
-@media (max-width: 768px){
-
-/* Toolbar wraps nicely */
 .toolbar{
 flex-wrap:wrap;
 row-gap:8px;
 }
 
-/* Workspace becomes vertical */
 .workspace{
 flex-direction:column;
 padding:8px;
 }
 
-/* Notes full width */
 .notes-card{
 width:100%;
 min-height:160px;
 }
 
-/* Code section */
 .code-card{
 width:100%;
 min-height:320px;
 }
 
-/* Code editor minimum height */
 .CodeMirror{
 min-height:220px;
 }
 
-/* Output smaller on mobile */
 .output textarea{
 height:120px;
 }
 
-/* Timer spacing */
 .timer{
 width:100%;
 display:flex;
@@ -187,16 +229,10 @@ gap:8px;
 flex-wrap:wrap;
 }
 
-.timer-controls{
-margin-left:auto;
-}
+.timer-controls{margin-left:auto}
 
-/* Inputs scale better */
-input{
-min-width:140px;
-}
+input{min-width:140px}
 
-/* Buttons slightly smaller */
 .timer-controls button{
 width:34px;
 height:34px;
@@ -204,3 +240,9 @@ height:34px;
 
 }
 
+/* ================= ANIMATION ================= */
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
