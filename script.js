@@ -1,83 +1,119 @@
-// CodeMirror
+/* ================= CODEMIRROR ================= */
+
 const editor = CodeMirror.fromTextArea(code, {
   mode: "javascript",
   lineNumbers: true,
   theme: "eclipse",
 });
 
+/* ================= RESTORE FROM STORAGE ================= */
 
-// Restore
 editor.setValue(localStorage.getItem("code") || "");
 notes.value = localStorage.getItem("notes") || "";
+output.value = localStorage.getItem("output") || "";
 
-// Save
+/* ================= SAVE TO STORAGE ================= */
+
 editor.on("change", () => localStorage.setItem("code", editor.getValue()));
 notes.oninput = (e) => localStorage.setItem("notes", e.target.value);
+output.oninput = (e) => localStorage.setItem("output", e.target.value);
 
-// Theme
+/* ================= THEME ICONS ================= */
+
+const sunIcon = `
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<circle cx="12" cy="12" r="5"/>
+<line x1="12" y1="1" x2="12" y2="3"/>
+<line x1="12" y1="21" x2="12" y2="23"/>
+<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+<line x1="1" y1="12" x2="3" y2="12"/>
+<line x1="21" y1="12" x2="23" y2="12"/>
+<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+</svg>
+`;
+
+const moonIcon = `
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+</svg>
+`;
+
+themeIcon.innerHTML = moonIcon;
+
+/* ================= THEME TOGGLE ================= */
+
 themeBtn.onclick = () => {
   document.body.classList.toggle("dark");
 
   const isDark = document.body.classList.contains("dark");
 
   editor.setOption("theme", isDark ? "dracula" : "eclipse");
-  themeBtn.innerText = isDark ? "☀️" : "🌙";
+
+  themeIcon.innerHTML = isDark ? sunIcon : moonIcon;
+  themeBtn.classList.toggle("rotate");
 };
 
+/* ================= TIMER ================= */
 
-// Timer
-let sec = 0,
-  i = null;
+let sec = 0;
+let i = null;
+
 function start() {
-  if (!i)
+  if (!i) {
     i = setInterval(() => {
       sec++;
-      timer.innerText = `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+      timer.innerText =
+        `${String(Math.floor(sec / 60)).padStart(2, "0")}:` +
+        `${String(sec % 60).padStart(2, "0")}`;
     }, 1000);
+  }
 }
+
 function stop() {
   clearInterval(i);
   i = null;
 }
 
-// save button
+function reset() {
+  stop();
+  sec = 0;
+  timer.innerText = "00:00";
+}
+
+/* ================= EXPORT ================= */
+
 function saveFile() {
   const isDark = document.body.classList.contains("dark");
 
-  // Highlight code
   let highlightedCode = "";
+
   CodeMirror.runMode(editor.getValue(), "javascript", (text, style) => {
-    if (style) {
-      highlightedCode += `<span class="cm-${style}">${text}</span>`;
-    } else {
-      highlightedCode += text;
-    }
+    highlightedCode += style
+      ? `<span class="cm-${style}">${text}</span>`
+      : text;
   });
 
-  // Theme class
   const themeClass = isDark ? "cm-s-dracula" : "cm-s-eclipse";
 
-  // App colors
   const styles = isDark
     ? `
 body{margin:0;font-family:system-ui;background:#0b0b0b;color:#e5e5e5}
 .notes{background:#151515;color:#e5e5e5}
 .code{background:#1f2937}
-.output{background:#000;color:#00ff90}
-`
-    : ` 
+.output{background:#000;color:#00ff90}`
+    : `
 body{margin:0;font-family:system-ui;background:#f3f4f6;color:#111}
 .notes{background:white;color:#111}
 .code{background:white;color:#111}
-.output{background:#000;color:#00ff90}
-`;
+.output{background:#000;color:#00ff90}`;
 
   const html = `
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>DevPad Export</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
@@ -123,15 +159,8 @@ ${styles}
 
   const blob = new Blob([html], { type: "text/html" });
   const a = document.createElement("a");
+
   a.href = URL.createObjectURL(blob);
   a.download = (filename.value || "devpad") + ".html";
   a.click();
 }
-
-function reset() {
-  stop();
-  sec = 0;
-  timer.innerText = "00:00";
-}
-output.value = localStorage.getItem("output") || "";
-output.oninput = (e) => localStorage.setItem("output", e.target.value);
