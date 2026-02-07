@@ -5,17 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/png" href="./DevPad.png">
     <title>DevPad</title>
+    <link rel="icon" href="DevPad.png">
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/eclipse.min.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/runmode/runmode.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/eclipse.min.css">
 </head>
 
 <body>
@@ -24,7 +26,9 @@
         <h2>DevPad</h2>
 
         <div class="nav-right">
-            <button id="themeBtn">🌙</button>
+            <button id="themeBtn" class="theme-toggle">
+                <span id="themeIcon"></span>
+            </button>
         </div>
     </nav>
 
@@ -72,6 +76,5 @@
 
     <script src="script.js"></script>
 </body>
-
 
 </html>
