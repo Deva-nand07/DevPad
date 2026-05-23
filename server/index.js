@@ -1,3 +1,11 @@
+/*
+  DevPad — Code. Note. Focus. Create.
+  Author: Deva Nand
+  GitHub: https://github.com/Deva-nand07/DevPad
+
+  This project is licensed under CC BY-NC 4.0.
+  Unauthorized claiming of this work is not permitted.
+*/
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
