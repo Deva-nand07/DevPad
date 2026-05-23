@@ -57,12 +57,12 @@ SMTP email configuration required. When a user clicks "Forgot Password":
 ## Environment Variables (server/.env)
 
 ```
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/devpad
+JWT_SECRET=your_secret_key_here
+```
 ## License
 
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 License.
 
 You are free to use and modify the code for learning purposes, but proper credit must be given to the original author.
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/devpad
-JWT_SECRET=your_secret_key_here
-```
