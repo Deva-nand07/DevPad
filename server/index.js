@@ -12,7 +12,7 @@ const resetRoutes   = require('./routes/reset');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://vercel.com/deva-nand07s-projects/dev-pad/EMfzpGdJQi2EaAFE8gSrYotoNprz']
   credentials: true
 }));
 app.use(express.json());
