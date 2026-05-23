@@ -51,7 +51,7 @@ The Vite dev server proxies `/api/*` to `http://localhost:5000`.
 
 No email configuration required. When a user clicks "Forgot Password":
 1. Enter registered email → server generates a 6-digit OTP stored in MongoDB (10 min expiry)
-2. OTP is displayed on screen — user copies it into the input field
+2. OTP is send to user to their registered Email — user copies it into the input field
 3. OTP verified → user sets a new password
 
 ## Environment Variables (server/.env)
