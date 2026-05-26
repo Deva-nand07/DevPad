@@ -34,32 +34,37 @@ const NotesPanel = forwardRef(function NotesPanel(_, ref) {
 
   useImperativeHandle(ref, () => ({
     getCurrentNote: () => ({
-      id:      isDraftRef.current ? null : activeRef.current,
-      title:   titleRef.current  || 'New Note',
+      id: isDraftRef.current ? null : activeRef.current,
+      title: titleRef.current || "New Note",
       content: contentRef.current,
       isDraft: isDraftRef.current,
     }),
     // Called by HomePage after API save succeeds — updates local list + clears draft flag
     onNoteSaved: (savedNote) => {
       const id = savedNote._id || savedNote.id;
-      setIsDraft(false);       isDraftRef.current = false;
-      setActiveNote(id);       activeRef.current  = id;
+      setIsDraft(false);
+      isDraftRef.current = false;
+      setActiveNote(id);
+      activeRef.current = id;
       setUnsaved(false);
-      setNotes(prev => {
-        const exists = prev.find(n => (n._id || n.id) === id);
+      setNotes((prev) => {
+        const exists = prev.find((n) => (n._id || n.id) === id);
         return exists
-          ? prev.map(n => ((n._id || n.id) === id ? savedNote : n))
+          ? prev.map((n) => ((n._id || n.id) === id ? savedNote : n))
           : [savedNote, ...prev];
       });
     },
-    markSaved:    () => setUnsaved(false),
+    markSaved: () => setUnsaved(false),
     openNote: (note) => {
       selectNote(note);
+    },
+    deleteNote: (id) => {
+      removeNoteFromUI(id);
     },
     getExportText: () => {
       const t = titleRef.current;
       const c = contentRef.current;
-      return (t ? t + '\n' + '='.repeat(t.length) + '\n\n' : '') + c;
+      return (t ? t + "\n" + "=".repeat(t.length) + "\n\n" : "") + c;
     },
     reloadNotes: loadNotes,
   }));
@@ -105,17 +110,50 @@ const NotesPanel = forwardRef(function NotesPanel(_, ref) {
   };
 
   const deleteNote = async (id) => {
-    const remaining = notesRef.current.filter(n => n._id !== id && n.id !== id);
+    const remaining = notesRef.current.filter(
+      (n) => n._id !== id && n.id !== id,
+    );
     setNotes(remaining);
-    try { await api.delete(`/notes/${id}`); setDbError(false); }
-    catch (err) { console.error('Delete failed:', err.message); setDbError(true); }
+    try {
+      await api.delete(`/notes/${id}`);
+      setDbError(false);
+    } catch (err) {
+      console.error("Delete failed:", err.message);
+      setDbError(true);
+    }
     if (activeRef.current === id) {
       if (remaining.length > 0) selectNote(remaining[0]);
       else {
-        setActiveNote(null); syncRefs({ activeNote: null });
-        setTitle('');        syncRefs({ title: '' });
-        setContent('');      syncRefs({ content: '' });
-        setIsDraft(false);   syncRefs({ isDraft: false });
+        setActiveNote(null);
+        syncRefs({ activeNote: null });
+        setTitle("");
+        syncRefs({ title: "" });
+        setContent("");
+        syncRefs({ content: "" });
+        setIsDraft(false);
+        syncRefs({ isDraft: false });
+        setUnsaved(false);
+      }
+    }
+  };
+
+  // UI-only removal — used when the caller (e.g. modal) has already deleted via API
+  const removeNoteFromUI = (id) => {
+    const remaining = notesRef.current.filter(
+      (n) => n._id !== id && n.id !== id,
+    );
+    setNotes(remaining);
+    if (activeRef.current === id) {
+      if (remaining.length > 0) selectNote(remaining[0]);
+      else {
+        setActiveNote(null);
+        syncRefs({ activeNote: null });
+        setTitle("");
+        syncRefs({ title: "" });
+        setContent("");
+        syncRefs({ content: "" });
+        setIsDraft(false);
+        syncRefs({ isDraft: false });
         setUnsaved(false);
       }
     }
