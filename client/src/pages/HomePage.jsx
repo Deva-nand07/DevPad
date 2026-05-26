@@ -28,18 +28,18 @@ console.log("Hello DevPad_user");
 print("Hello DevPad_user")
 `,
   cpp:        `// Welcome to DevPad
-#include<iostream>
+#include <iostream>
 using namespace std;
 int main() {
-  cout<<"Hello DevPad_user"<<endl;
-  return 0;
+    cout << "Hello DevPad_user" << endl;
+    return 0;
 }
 `,
   java:       `// Welcome to DevPad
 public class Main {
-  public static void main(String[] args) {
-    System.out.println("Hello DevPad_user");
-  }
+    public static void main(String[] args) {
+        System.out.println("Hello DevPad_user");
+    }
 }
 `,
 };
@@ -668,7 +668,7 @@ export default function HomePage() {
                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.boxShadow = 'none'; }}
                   >
                     <LogOut size={14} />
-                    LogOut
+                    Sign Out
                   </button>
                 </div>
               </div>
@@ -866,6 +866,27 @@ export default function HomePage() {
                         e.stopPropagation();
                         await api.delete(`/code/${s._id}`);
                         setSavedFiles(prev => ({ ...prev, code: prev.code.filter(c => c._id !== s._id) }));
+                        // Find and close any open tab that had this snippet loaded
+                        const tabsWithSnippet = Object.entries(snippetIds)
+                          .filter(([, dbId]) => dbId === s._id)
+                          .map(([tabId]) => Number(tabId));
+                        if (tabsWithSnippet.length > 0) {
+                          setTabs(prev => {
+                            const remaining = prev.filter(t => !tabsWithSnippet.includes(t.id));
+                            // If the active tab was one of the deleted ones, switch to first remaining
+                            if (tabsWithSnippet.includes(activeTab)) {
+                              if (remaining.length > 0) setActiveTab(remaining[0].id);
+                              else {
+                                // No tabs left — create a fresh default tab
+                                const freshId = Date.now();
+                                setActiveTab(freshId);
+                                setCode('');
+                                return [{ id: freshId, lang: 'javascript', fileName: 'script' }];
+                              }
+                            }
+                            return remaining.length > 0 ? remaining : prev;
+                          });
+                        }
                         setSnippetIds(prev => { const next = { ...prev }; Object.keys(next).forEach(k => { if (next[k] === s._id) delete next[k]; }); return next; });
                         showToast('Code file deleted');
                       }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', padding: 4, borderRadius: 5, flexShrink: 0 }}
@@ -901,6 +922,8 @@ export default function HomePage() {
                         e.stopPropagation();
                         await api.delete(`/notes/${n._id}`);
                         setSavedFiles(prev => ({ ...prev, notes: prev.notes.filter(x => x._id !== n._id) }));
+                        // Also remove from the NotesPanel UI (handles active note / editor state)
+                        if (notesPanelRef.current?.deleteNote) notesPanelRef.current.deleteNote(n._id);
                         showToast('Note deleted');
                       }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', padding: 4, borderRadius: 5, flexShrink: 0 }}
                         onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
