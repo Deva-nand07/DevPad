@@ -5,13 +5,15 @@ const User       = require('../models/User');
 
 const router = express.Router();
 
-// ── Nodemailer transporter (Gmail SMTP + App Password) ────────────────
+// ── Nodemailer transporter (Brevo + Gmail SMTP + App Password) ────────────────
 function createTransporter() {
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    secure: false, // false for port 587
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASS,
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
     },
   });
 }
@@ -42,7 +44,7 @@ router.post('/request', async (req, res) => {
     const transporter = createTransporter();
 
     const mailOptions = {
-      from: `"DevPad" <${process.env.GMAIL_USER}>`,
+      from: `"DevPad" <${process.env.MAIL_FROM}>`,
       to: email,
       subject: 'Your DevPad Password Reset OTP',
       html: `
@@ -130,9 +132,9 @@ router.post('/request', async (req, res) => {
     console.error('[reset/request]', err.message);
 
     // Give a helpful message if Gmail credentials are missing / wrong
-    if (err.code === 'EAUTH' || err.responseCode === 535) {
-      return res.status(500).json({ message: 'Email delivery failed. Check GMAIL_USER and GMAIL_APP_PASS in server .env.' });
-    }
+   if (err.code === 'EAUTH' || err.responseCode === 535) {
+    return res.status(500).json({ message: 'Email delivery failed. Check MAIL_USER and MAIL_PASS in server .env.' });
+  }
     res.status(500).json({ message: 'Server error. Could not send OTP email.' });
   }
 });
